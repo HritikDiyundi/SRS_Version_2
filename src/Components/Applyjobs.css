@@ -1,0 +1,146 @@
+.view-jobs-container {
+  display: flex;
+  flex-direction: column;
+}
+ 
+
+ 
+.content {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+ 
+
+ 
+.main-content {
+  background-color: transparent;
+  width: 80%;
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+}
+ 
+.job-listings {
+  width: 40%;
+  overflow-y: auto;
+  background-color:transparent;
+  /* border-right: 1px solid #bcbaba; */
+  padding: 1rem;
+}
+ 
+.job-card {
+  width: 350px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+  border: 1px solid #bcbaba;
+  background-color:  #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+ 
+.job-card:hover {
+  background-color: #f0f8ff;
+}
+ 
+.job-details {
+  width: 60%;
+  /* height: 30%; */
+  background-color: #fff;
+  position: relative;
+  
+  border: 1px solid #bcbaba;
+  border-radius: 5px;
+  padding: 2rem;
+  /* margin: 20px 0; */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  
+}
+
+
+ 
+.apply-btn {
+  padding: 0.5rem 1rem;
+  background-color: #2400C3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 2rem;
+  margin-right: 10px;
+}
+ 
+.apply-btn:hover {
+  background-color: #0b5d73;
+}
+ 
+.joblist-location{
+  margin-top: 15px;
+
+}
+.joblist-brick{
+  margin-top: 20px;
+}
+
+.joblist-brick span{
+  font-size: medium;
+  margin-right: 15px;
+  padding:5px 10px 5px 10px;
+  height: 40px;
+  background-color: #D9D9D9;
+  border-radius: 5px;
+
+}
+.jobshort-bullet{
+  margin-top: 25px;
+ 
+
+}
+
+.jobshort-bullet ul li{
+  margin-top: 5px;
+  margin-left: 15px;
+  
+
+
+}
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  /* background-color: black; */
+  color: black;
+  font-size: 16px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 20%;
+}
+.jobdetails-margin{
+  margin-top: 30px;
+}
+.jobdetails-con strong{
+  font-weight: 600;
+
+}
+.mild {
+  margin-top: 10px;
+
+}
+.mild span{
+  margin-right: 15px;
+  font-weight: 420;
+
+}
+
+.jobdesc,
+.bottom-space {
+  margin-top: 40px;
+}
+.center-buttons{
+  display: flex;
+  justify-content: center;
+
+}
