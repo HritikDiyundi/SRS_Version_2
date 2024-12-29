@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 import "./Header.css";
+import logo from "./Datanauts_logo.png"
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationDot,
@@ -35,7 +37,9 @@ export default function Header() {
   return (
     <div className="header-container" onClick={handleOutsideClick}>
       <div className="header-items">
-        <span>Datanauts</span>
+        {/* <span>{logo}</span> */}
+        {/* <img src="Datanauts_logo.jpg"alt=""/> */}
+        <img src={logo} alt="logo"/>
         <div className="Searchbar">
           {/* Search Input */}
           <div
@@ -51,7 +55,12 @@ export default function Header() {
           </div>
 
           {/* Location Dropdown */}
-          <div className="location-dropdown " onClick={toggleLocationDropdown}>
+          <div
+            className="location-dropdown "
+            onClick={toggleLocationDropdown}
+            role="button"
+            aria-expanded={isOpen}
+          >
             <FontAwesomeIcon icon={faLocationDot} />
             <span className="location-arrow">{isOpen ? "▲" : "▼"}</span>
             {isOpen && (
@@ -67,7 +76,7 @@ export default function Header() {
           </div>
         </div>
         <div className="header-buttons">
-          <button className="header-button">Upload Resume</button>
+          <button className="header-button">Dashboard</button>
           <button className="header-button">About</button>
           <button className="header-button">Privacy Policy</button>
           <button className="log-out">Log Out</button>
