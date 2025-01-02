@@ -9,8 +9,9 @@ body {
   gap: 20px;
   height: 100vh;
   padding: 15px;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
+
 .dashboard-overview h2 {
   font-size: x-large;
 }
@@ -25,7 +26,11 @@ body {
   gap: 40px;
   padding: 15px;
   border-radius: 8px;
+  /* overflow-y: scroll;
+  overflow-x: hidden; */
 }
+
+
 /* .sidebar-btns{
   margin-bottom: 30px;
 } */

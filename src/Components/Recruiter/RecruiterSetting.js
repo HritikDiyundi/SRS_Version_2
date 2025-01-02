@@ -1,11 +1,6 @@
 import React, { useState } from "react";
-import JobPost from "./Recruiter/JobPost.js";
-import RecruiterDashboard from "./Recruiter/RecruiterDashboard.js";
-import JobListing from "./Recruiter/JobListing.js";
-import SavedCandidate from "./Recruiter/SavedCandidate.js";
-import RecruiterSetting from "./Recruiter/RecruiterSetting.js";
+import "../Dashboard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
 
 import {
   faMapMarkerAlt,
@@ -23,8 +18,8 @@ import {
   faUpload,
   faLink,
 } from "@fortawesome/free-solid-svg-icons";
-import "./Dashboard.css";
-import Header from "./Header";
+
+import Header from "../Header";
 import {
   faGithub,
   faTwitterSquare,
@@ -33,12 +28,21 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 
-export default function Dashboard() {
-  const navigate = useNavigate();
-  const [activeMenu, setActiveMenu] = useState("My Board");
-  const [showProfileEdit, setShowProfileEdit] = useState(false);
-  const [activeTab, setActiveTab] = useState("Personal");
+const RecruiterSetting = () => {
+  const [activeTab, setActiveTab] = useState("personal");
+  const [socialLinks, setSocialLinks] = useState([
+    { platform: "Github", link: "" },
+    { platform: "Twitter", link: "" },
+    { platform: "LinkedIn", link: "" },
+    { platform: "Instagram", link: "" },
+  ]);
   const [activeResumeMenu, setActiveResumeMenu] = useState(null);
+  //   const [showUploadResumeModal, setShowUploadResumeModal] = useState(false);
+  //   const [resumeName, setResumeName] = useState("");
+  //   const [uploadedFile, setUploadedFile] = useState(null);
+  const [showProfileEdit, setShowProfileEdit] = useState(false);
+  // const [activeTab, setActiveTab] = useState("Personal");
+  // const [activeResumeMenu, setActiveResumeMenu] = useState(null);
   const [showUploadResumeModal, setShowUploadResumeModal] = useState(false);
   const [resumeName, setResumeName] = useState("");
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -298,8 +302,15 @@ export default function Dashboard() {
     ],
   };
 
+  const platformIcons = {
+    Github: faGithub,
+    Twitter: faTwitterSquare,
+    LinkedIn: faLinkedin,
+    Instagram: faInstagram,
+    default: faLink,
+  };
+
   const openResumeMenu = (id) => {
-    // console.log(`Open menu for resume ID: ${id}`);
     setActiveResumeMenu((prev) => (prev === id ? null : id));
   };
 
@@ -312,13 +323,16 @@ export default function Dashboard() {
     console.log("Delete resume with ID:", id);
     setActiveResumeMenu(null);
   };
+
   const handleOpenModal = () => {
     if (userResumes.length >= maxResumes) {
       setShowUploadResumeModal(false);
+      alert("Maximum number of resumes reached.");
     } else {
       setShowUploadResumeModal(true);
     }
   };
+
   const handleCloseModal = () => {
     setShowUploadResumeModal(false);
     setResumeName("");
@@ -330,15 +344,13 @@ export default function Dashboard() {
       alert("Please fill in all fields and upload a file.");
       return;
     }
-    // Logic to upload the resume
-    // console.log("Uploaded:", { resumeName, uploadedFile });
+    console.log("Uploaded:", { resumeName, uploadedFile });
     handleCloseModal();
   };
 
   const handlePhotoUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // Validate file type and size
       if (!["image/png", "image/jpeg"].includes(file.type)) {
         alert("Please upload a valid PNG or JPEG image.");
         return;
@@ -347,26 +359,8 @@ export default function Dashboard() {
         alert("File size should not exceed 5MB.");
         return;
       }
-
-      // Process the file (e.g., upload to the server or preview it)
-      // console.log('Uploaded file:', file);
+      console.log("Uploaded file:", file);
     }
-  };
-
-  const [socialLinks, setSocialLinks] = useState([
-    { platform: "Github", link: "" },
-    { platform: "Twitter", link: "" },
-    { platform: "LinkedIn", link: "" },
-    { platform: "Instagram", link: "" },
-  ]);
-
-  // Map for platform icons
-  const platformIcons = {
-    Github: faGithub,
-    Twitter: faTwitterSquare,
-    LinkedIn: faLinkedin,
-    Instagram: faInstagram,
-    default: faLink,
   };
 
   const handleAddNewLink = () => {
@@ -382,10 +376,6 @@ export default function Dashboard() {
     const updatedLinks = [...socialLinks];
     updatedLinks[index][field] = value;
     setSocialLinks(updatedLinks);
-  };
-
-  const handleApply = (jobId) => {
-    navigate(`/jobdetails/${jobId}`);
   };
 
   const renderSettingsContent = () => {
@@ -1055,511 +1045,53 @@ export default function Dashboard() {
     }
   };
 
-  const renderContent = () => {
-    switch (activeMenu) {
-      case "My Board":
-        return (
-          <div className="dashboard-overview">
-            <h2>Welcome, {dashboardData.user?.name || "User"}!</h2>
-            <div className="overview-cards">
-              <div className="card">
-                <div className="card-content">
-                  <span className="icon">📋</span>
-                  <div>
-                    <h3>Applied Jobs</h3>
-                    <p>{dashboardData.appliedJobsCount}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-content">
-                  <span className="icon">💾</span>
-                  <div>
-                    <h3>Saved Jobs</h3>
-                    <p>{dashboardData.savedJobsCount}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-content">
-                  <span className="icon">🔔</span>
-                  <div>
-                    <h3>Job Alerts</h3>
-                    <p>{dashboardData.jobAlertsCount}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="recent-applications">
-              <div className="recent-applications-header">
-                <h3>Recent Applications</h3>
-                <button className="custom-view-all-btn">
-                  View All <FontAwesomeIcon icon={faArrowRight} />
-                </button>
-              </div>
-              <table className="custom-table">
-                <thead>
-                  <tr>
-                    <th>Job Details</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dashboardData.recentApplications.slice(0, 5).map((app) => (
-                    <tr key={app.id}>
-                      <td>
-                        <div className="customjob-details">
-                          <div className="customjob-header">
-                            <img
-                              src={app.companyLogo}
-                              alt="Company Logo"
-                              className="customcompany-logo"
-                            />
-                            <div className="customheaderinside">
-                              <h4>{app.job}</h4>
-                              <span className="customjob-shift">
-                                {app.shift}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="customjob-info">
-                            <span className="customlocation">
-                              <span className="icon">📍</span>
-                              {app.location}
-                            </span>
-                            <span className="customsalary">
-                              <span className="icon">💰</span>
-                              {app.salary}
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <span>{app.date}</span>
-                      </td>
-
-                      <td>
-                        <span
-                          className={`customstatus ${app.status.toLowerCase()}`}
-                        >
-                          {app.status}
-                        </span>
-                      </td>
-
-                      <td>
-                        <button className="customview-details">
-                          View Details
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        );
-
-      case "Applied Jobs":
-        return (
-          <div className="applied-jobs">
-            <h2>Applied Jobs ({dashboardData.appliedJobsCount})</h2>
-            <div className="recent-applications">
-              <table className="custom-table">
-                <thead>
-                  <tr>
-                    <th>Job Details</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dashboardData.recentApplications.map((app) => (
-                    <tr key={app.id}>
-                      <td>
-                        <div className="customjob-details">
-                          <div className="customjob-header">
-                            <img
-                              src={app.companyLogo}
-                              alt="Company Logo"
-                              className="customcompany-logo"
-                            />
-                            <div className="customheaderinside">
-                              <h4>{app.job}</h4>
-                              <span className="customjob-shift">
-                                {app.shift}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="customjob-info">
-                            <span className="customlocation">
-                              <span className="icon">📍</span> {app.location}
-                            </span>
-                            <span className="customsalary">
-                              <span className="icon">💰</span> {app.salary}
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <span>{app.date}</span>
-                      </td>
-                      <td>
-                        <span
-                          className={`customstatus ${app.status.toLowerCase()}`}
-                        >
-                          {app.status}
-                        </span>
-                      </td>
-                      <td>
-                        <button className="customview-details">
-                          View Details
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        );
-
-      case "Job Suggestions":
-        return (
-          <div className="applied-jobs">
-            <h2>Job Suggestions ({dashboardData.appliedJobsCount})</h2>
-            <p className="max-resume-info" style={{ marginTop: "20px" }}>
-              Select A Resume for Job Recommendations
-            </p>
-            <div className="job-sugg-resumelist">
-              {dashboardData.resumeData.map((resume) => (
-                <div key={resume.id} className="job-resume-item">
-                  <span className="resume-icon">📄</span>
-                  <div className="resume-details">
-                    <p>{resume.title}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="recent-applications">
-              <table className="custom-table">
-                <thead>
-                  <tr>
-                    <th>Job Details</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dashboardData.recentApplications.map((app) => (
-                    <tr key={app.id}>
-                      <td>
-                        <div className="customjob-details">
-                          <div className="customjob-header">
-                            <img
-                              src={app.companyLogo}
-                              alt="Company Logo"
-                              className="customcompany-logo"
-                            />
-                            <div className="customheaderinside">
-                              <h4>{app.job}</h4>
-                              <span className="customjob-shift">
-                                {app.shift}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="customjob-info">
-                            <span className="customlocation">
-                              <span className="icon">📍</span> {app.location}
-                            </span>
-                            <span className="customsalary">
-                              <span className="icon">💰</span> {app.salary}
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <span>{app.date}</span>
-                      </td>
-                      <td>
-                        <span
-                          className={`customstatus ${app.status.toLowerCase()}`}
-                        >
-                          {app.status}
-                        </span>
-                      </td>
-                      <td>
-                        <button
-                          className="customview-details"
-                          onClick={() => handleApply(Dashboard.id)}
-                        >
-                          Apply Now
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        );
-
-      case "Job Alerts":
-        return (
-          <div className="applied-jobs">
-            <h2>Job Alerts ({dashboardData.appliedJobsCount})</h2>
-            <div className="recent-applications">
-              <table className="custom-table">
-                <thead>
-                  <tr>
-                    <th>Job Details</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dashboardData.recentApplications.map((app) => (
-                    <tr key={app.id}>
-                      <td>
-                        <div className="customjob-details">
-                          <div className="customjob-header">
-                            <img
-                              src={app.companyLogo}
-                              alt="Company Logo"
-                              className="customcompany-logo"
-                            />
-                            <div className="customheaderinside">
-                              <h4>{app.job}</h4>
-                              <span className="customjob-shift">
-                                {app.shift}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="customjob-info">
-                            <span className="customlocation">
-                              <span className="icon">📍</span> {app.location}
-                            </span>
-                            <span className="customsalary">
-                              <span className="icon">💰</span> {app.salary}
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <span>{app.date}</span>
-                      </td>
-                      <td>
-                        <span
-                          className={`customstatus ${app.status.toLowerCase()}`}
-                        >
-                          {app.status}
-                        </span>
-                      </td>
-                      <td>
-                        <button className="customview-details">
-                          Apply Now
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        );
-
-      case "Saved Jobs":
-        return (
-          <div className="applied-jobs">
-            <h2>Saved Jobs ({dashboardData.savedJobsCount})</h2>
-            <div className="recent-applications">
-              <table className="custom-table">
-                <thead>
-                  <tr>
-                    <th>Job Details</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dashboardData.recentApplications.map((app) => (
-                    <tr key={app.id}>
-                      <td>
-                        <div className="customjob-details">
-                          <div className="customjob-header">
-                            <img
-                              src={app.companyLogo}
-                              alt="Company Logo"
-                              className="customcompany-logo"
-                            />
-                            <div className="customheaderinside">
-                              <h4>{app.job}</h4>
-                              <span className="customjob-shift">
-                                {app.shift}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="customjob-info">
-                            <span className="customlocation">
-                              <span className="icon">📍</span> {app.location}
-                            </span>
-                            <span className="customsalary">
-                              <span className="icon">💰</span> {app.salary}
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <span>{app.date}</span>
-                      </td>
-                      <td>
-                        <span
-                          className={`customstatus ${app.status.toLowerCase()}`}
-                        >
-                          {app.status}
-                        </span>
-                      </td>
-                      <td>
-                        <button className="customview-details">
-                          Apply Now
-                        </button>
-                      </td>
-
-                      <td className="push-right">
-                        <div className="action-buttons">
-                          <button
-                            className="remove-btn"
-                            // onClick={() => alert(`Removing job: ${app.job}`)}
-                          >
-                            <FontAwesomeIcon icon={faTrashAlt} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        );
-
-      case "My Profile":
-        return (
-          <div className="idontknow">
-            <div className="applied-jobs">
-              <h2>Settings </h2>
-              <div className="settings-container">
-                <header className="settings-header">
-                  <div
-                    className={`settings-tab ${
-                      activeTab === "personal" ? "active" : ""
-                    }`}
-                    onClick={() => setActiveTab("Personal")}
-                  >
-                    <span className="settings-icon">👤</span> Personal
-                  </div>
-
-                  <div
-                    className={`settings-tab ${
-                      activeTab === "profile" ? "active" : ""
-                    }`}
-                    onClick={() => setActiveTab("profile")}
-                  >
-                    <span className="settings-icon">🧑</span> Profile
-                  </div>
-
-                  <div
-                    className={`settings-tab ${
-                      activeTab === "social" ? "active" : ""
-                    }`}
-                    onClick={() => setActiveTab("social")}
-                  >
-                    <span className="settings-icon">🌐</span> Social
-                  </div>
-                  <div
-                    className={`settings-tab ${
-                      activeTab === "account" ? "active" : ""
-                    }`}
-                    onClick={() => setActiveTab("account")}
-                  >
-                    <span className="settings-icon">🔒</span> Account Settings
-                  </div>
-                </header>
-
-                <main className="settings-content">
-                  {renderSettingsContent()}
-                </main>
-              </div>
-            </div>
-          </div>
-        );
-
-      //Recuriter side
-
-      case "Recruiter Dashboard":
-        return <RecruiterDashboard />;
-      case "Saved Candidate":
-        return <SavedCandidate />;
-      case "Job Listings":
-        return <JobListing />;
-      case "Interview Schedule":
-        return <p> Your interview schedule details..</p>;
-      case "Job Post":
-        return <JobPost />;
-      case "Recruiter Setting":
-        return <RecruiterSetting />;
-
-      default:
-        return <p>Select an option from the Sidebar</p>;
-    }
-  };
-
   return (
-    <div>
-      <Header />
-
-      <div className="dashboard-container">
-        <aside className="sidebar">
-          <div className="profile-card">
-            <div className="avatar">👤</div>
-            <h3>{dashboardData.user?.name || "User Name"}</h3>
-            <p>{dashboardData.user?.email || "user@example.com"}</p>
-            {/* <button
-              className="edit-profile-btn"
-              onClick={() => setShowProfileEdit(!showProfileEdit)}
+    <div className="idontknow">
+      <div className="applied-jobs">
+        <h2>Settings </h2>
+        <div className="settings-container">
+          <header className="settings-header">
+            <div
+              className={`settings-tab ${
+                activeTab === "personal" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("Personal")}
             >
-              {showProfileEdit ? "Close Edit" : "Edit Profile"}
-            </button> */}
-            {showProfileEdit && (
-              <div className="edit-profile">
-                <p>Edit profile coming soon!</p>
-              </div>
-            )}
-          </div>
-          <nav>
-            {(dashboardData.menuItems || []).map((item, index) => (
-              <div
-                key={index}
-                className={`menu-item ${
-                  activeMenu === item.name ? "active" : ""
-                }`}
-                onClick={() => setActiveMenu(item.name)}
-              >
-                {item.icon} {item.name} {item.count}
-              </div>
-            ))}
-          </nav>
-        </aside>
+              <span className="settings-icon">👤</span> Personal
+            </div>
 
-        <div className="idontknow2">
-          <main className="dashboard-content">{renderContent()}</main>
+            <div
+              className={`settings-tab ${
+                activeTab === "profile" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("profile")}
+            >
+              <span className="settings-icon">🧑</span> Profile
+            </div>
+
+            <div
+              className={`settings-tab ${
+                activeTab === "social" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("social")}
+            >
+              <span className="settings-icon">🌐</span> Social
+            </div>
+            <div
+              className={`settings-tab ${
+                activeTab === "account" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("account")}
+            >
+              <span className="settings-icon">🔒</span> Account Settings
+            </div>
+          </header>
+
+          <main className="settings-content">{renderSettingsContent()}</main>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default RecruiterSetting;
